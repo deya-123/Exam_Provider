@@ -1,0 +1,552 @@
+﻿@model ExamPageViewModel
+
+@{
+
+
+    Layout = "~/Views/Shared/_DashboardLayoutAdmin.cshtml";
+
+  
+}
+
+
+
+
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <!-- Page pre-title -->
+                @*  <div class="page-pretitle">
+                Overview
+                </div>*@
+                <h2 class="page-title">
+                    Exams Page
+                </h2>
+            </div>
+            <!-- Page title actions -->
+            <div class="col-auto ms-auto d-print-none">
+                <div class="btn-list">
+                    @*  <span class="d-none d-sm-inline">
+                    <a href="#" class="btn">
+                    New view
+                    </a>
+                    </span>*@
+
+                   <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-create">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                        Create new Exam
+                    </a>
+                    <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page body -->
+
+
+<!-- ----------------------exams----------------------------------- -->
+<div class="page-body">
+    <div class="container-xl">
+
+        <div class="card">
+            <div class="row mb-3" style="padding : 16px; align-self: center; ">
+                <div class="col-auto">
+                    <label for="startDate" class="form-label">Start Date:</label>
+                    <input type="date" id="startDate" class="form-control">
+                </div>
+                <div class="col-auto">
+                    <label for="endDate" class="form-label">End Date:</label>
+                    <input type="date" id="endDate" class="form-control">
+                </div>
+                <div class="col-auto align-self-end">
+                    <button id="searchBtn" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+
+            @await Html.PartialAsync("Exam/ReadExams")
+
+
+        </div>
+    </div>
+</div>
+<div class="modal modal-blur fade" id="modal-delete-exam" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            <div class="modal-body text-center py-4">
+                <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+                @await Html.PartialAsync("Exam/DeleteExam")
+            </div>
+            <div class="modal-footer">
+                <div class="w-100">
+                    <div class="row">
+                        <div class="col">
+                            <a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                Cancel
+                            </a>
+                        </div>
+                        <div class="col">
+                            <button type="submit" form="deleteExamForm" class="btn btn-danger w-100">
+                                Delete this Item
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal modal-blur fade" id="modal-create" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Exam</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                 @await Html.PartialAsync("Exam/CreateExam")
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                <button type="submit" form="createExamForm" class="btn btn-primary ms-auto">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                    Create new Exam
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal modal-blur fade" id="modal-edit" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Exam</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                 @await Html.PartialAsync("Exam/UpdateExam")
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                <button type="submit" form="editExamForm" class="btn btn-primary ms-auto">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                    Edit Exam
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ----------------------question----------------------------------- -->
+<div class="modal modal-blur " id="modal-question" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="page-header d-print-none">
+                <div class="container-xl">
+                    <div class="row g-2 align-items-center">
+                        <div class="col">
+                           
+                            <h2 class="page-title">
+                                Questions
+                            </h2>
+                        </div>
+                     
+                        <div class="col-auto ms-auto d-print-none">
+                            <div class="btn-list">
+                              
+                                <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-create-question">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                    Create new Question
+                                </a>
+                                <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+
+                @await Html.PartialAsync("Question/ReadQuestions")
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+           
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal modal-blur fade" id="modal-delete-question" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            <div class="modal-body text-center py-4">
+                <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+                @await Html.PartialAsync("Question/DeleteQuestion")
+               
+            </div>
+            <div class="modal-footer">
+                <div class="w-100">
+                    <div class="row">
+                        <div class="col">
+                            <a href="#" class="btn w-100" data-bs-toggle="modal" data-bs-target="#modal-question" @*data-bs-dismiss="modal"*@>
+                                back
+                            </a>
+                        </div>
+                        <div class="col">
+                            <button type="submit" form="deleteQuestionForm"  class="btn btn-danger w-100">
+                                Delete this Item
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal modal-blur" id="modal-create-question" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Question</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @await Html.PartialAsync("Question/CreateQuestion")
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-toggle="modal" data-bs-target="#modal-question" >
+                    back
+                </a>
+                <button type="submit" form="createQuestionForm" class="btn btn-primary ms-auto">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                    Create new Question
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal modal-blur fade" id="modal-edit-question" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Question</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @await Html.PartialAsync("Question/UpdateQuestion")
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-toggle="modal" data-bs-target="#modal-question" @*data-bs-dismiss="modal"*@
+                >
+                    back
+                </a>
+                <button type="submit" form="editQuestionForm" class="btn btn-primary ms-auto">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                    Edit Question
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ----------------------Options----------------------------------- -->
+<div class="modal modal-blur " id="modal-option" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="page-header d-print-none">
+                <div class="container-xl">
+                    <div class="row g-2 align-items-center">
+                        <div class="col">
+                           
+                            <h2 class="page-title">
+                                Options
+                            </h2>
+                        </div>
+                     
+                        <div class="col-auto ms-auto d-print-none">
+                            <div class="btn-list">
+                              
+                                <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-create-option">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                    Create new Option
+                                </a>
+                                <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+
+                @await Html.PartialAsync("Option/ReadOptions")
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary"  data-bs-toggle="modal" data-bs-target="#modal-question" >
+                    back
+                </a>
+           
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal modal-blur fade" id="modal-delete-option" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            <div class="modal-body text-center py-4">
+                <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+                @await Html.PartialAsync("Option/DeleteOption")
+               
+            </div>
+            <div class="modal-footer">
+                <div class="w-100">
+                    <div class="row">
+                        <div class="col">
+                            <a href="#" class="btn w-100" data-bs-toggle="modal" data-bs-target="#modal-option" @*data-bs-dismiss="modal"*@>
+                                back
+                            </a>
+                        </div>
+                        <div class="col">
+                            <button  type="submit" form="deleteOptionForm" class="btn btn-danger w-100">
+                                Delete this Item
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal modal-blur fade" id="modal-create-option" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Option</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @await Html.PartialAsync("Option/CreateOption")
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-toggle="modal" data-bs-target="#modal-option" @*data-bs-dismiss="modal"*@>
+                    back
+                </a>
+                <button type="submit" form="createOptionForm" class="btn btn-primary ms-auto">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                    Create new Option
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal modal-blur fade" id="modal-edit-option" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Option</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @await Html.PartialAsync("Option/UpdateOption")
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-toggle="modal" data-bs-target="#modal-option" @*data-bs-dismiss="modal"*@>
+                    back
+                </a>
+                <button type="submit" form="editOptionForm" class="btn btn-primary ms-auto">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                    Edit Option
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts {
+
+    <script>
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+
+
+
+
+
+            $('#searchBtn').click(function (event) {
+                event.preventDefault();
+
+                // Get the values from the form
+                var startDate = $('#startDate').val();
+                var endDate = $('#endDate').val();
+
+                // Make the AJAX request
+                $.ajax({
+                    url: API_URL+'Exam/SearchBetweenInterval',
+                    type: 'GET',
+                    data: {
+                        startDate: startDate,
+                        endDate: endDate
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        examTable.clear().rows.add(data.data).draw();
+                    },
+                    error: function () {
+                        $('#results').html('<p>An error occurred while fetching data.</p>');
+                    }
+                });
+            });
+
+
+
+
+            //var examIdNow = 1;
+            //$('#exams-table tbody').on('click', 'button', function () {
+            //    var action = this.textContent.trim();
+            //    var rowData = table.row($(this).parents('tr')).data();
+            //    var examId = rowData['examId'];
+            //    examIdNow = examId;
+            //    if (action === 'Questions') {
+            //        document.getElementById("examIdQuestion").value = examId;
+            //        questionsTable.ajax.reload();
+            //    }
+
+
+            //    else if (action === 'Edit') {
+            //        $.ajax({
+            //            url: API_URL + "Exam/GetExamById/" + examId,
+            //            type: 'GET',
+            //            success: function (data) {
+            //              //  var edit = document.getElementById("editForm");
+
+            //           //     populateForm("editForm",data);
+
+                            
+                           
+            //            },
+            //            error: function (xhr, textStatus, errorThrown) {
+            //                console.log('Error fetching user data:', errorThrown);
+            //            }
+            //        });
+            //    }
+            //    else if (action === 'Delete') {
+            //        {
+            //            var deleteExamForm = document.querySelector('#deleteExamForm');
+            //            if (deleteExamForm) {
+            //                deleteExamForm.action = API_URL + "Exam/DeleteExam/" + examId;
+            //            }
+            //        }
+            //    }
+            //});
+
+
+
+
+
+
+
+
+
+        });
+
+
+
+
+
+
+
+
+    </script>
+}
+
+
+    <style>
+        .dataTables_wrapper .dataTable .btn {
+            height: auto;
+            // Adjust button heights padding: 0.375rem 0.75rem;
+            // Bootstrap 4 padding style
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 1.2em 0.4em;
+            // Increase padding around buttons color: #007bff;
+            // Change the text color background-color: #ffffff;
+            // Change background color border: 1px solid #ddd;
+            // Add border margin-right: 5px;
+        }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+            .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+                color: #fff;
+                // Change text color for active/hover background-color: #007bff;
+                // Change background color for active/hover border-color: #007bff;
+                // Change border color for active/hover
+            }
+
+        div.dataTables_wrapper div.dataTables_info {
+            padding-top: 1.85em;
+        }
+
+        .dataTables_filter input {
+            height: 36px; /* Increase input height */
+            padding: 6px 12px; /* Adjust padding for better visual appearance */
+            font-size: 14px; /* Optional: Increase font size if needed */
+        }
+    </style>

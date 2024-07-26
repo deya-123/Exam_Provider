@@ -1,0 +1,40 @@
+﻿
+
+<form id="deleteQuestionForm" class="">
+    <h3>Are you sure?</h3>
+    <div class="text-muted">Do you really want to remove this Item? What you've done cannot be undone.</div>
+</form>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        $('#deleteQuestionForm').submit(function (event) {
+            event.preventDefault();
+         
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'Delete',
+                    success: function (response) {
+                    showSuccessToast('done successfully');
+         
+                        console.log('User created successfully.');
+                    $('#question-table').DataTable().ajax.url(API_URL + 'Question/GetAllQuestionsByExamId/' + examIdNow).load();
+                    },
+                   error: function (xhr, textStatus, errorThrown) {
+                        console.error('Error creating user:', errorThrown);
+                    }
+                });
+            
+        });
+
+
+    });
+
+
+
+
+
+
+
+
+</script>

@@ -1,0 +1,50 @@
+﻿@model CreateExamViewModels
+
+
+<div class="modal modal-blur fade" id="modal-create" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Exam</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <form id="createUserForm" class="" asp-action="Create" asp-controller="Users" method="post">
+
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="ExamName">Name</label>
+                        <input asp-for="ExamName" type="text" class="form-control" placeholder="Enter Name">
+                        <span asp-validation-for="ExamName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="ExamDuration">Duration</label>
+                        <input asp-for="ExamDuration" type="text" class="form-control" placeholder="Enter Duration">
+                        <span asp-validation-for="ExamDuration" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="ExamDescription">Description</label>
+                        <textarea asp-for="ExamDescription" type="text" class="form-control" placeholder="Enter Duration"></textarea>
+                        <span asp-validation-for="ExamDescription" class="text-danger"></span>
+                    </div>
+
+                </form>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                <button type="submit" form="createExamForm" class="btn btn-primary ms-auto">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                    Create new Exam
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

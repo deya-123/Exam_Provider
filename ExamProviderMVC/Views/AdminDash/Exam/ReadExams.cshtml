@@ -1,0 +1,138 @@
+﻿<div class="table-responsive" style="padding-left : 20px;padding-right: 20px;    ">
+    <table id="exams-table" class="table card-table table-vcenter text-nowrap datatable" style="width:100%">
+        <thead>
+            <tr>
+
+                <th>Exam Name</th>
+                <th>Exam Duration</th>
+                <th>Exam Description</th>
+                <th>CreatedAt</th>
+                <th>Questions</th>
+                <th>Update</th>
+                <th>Delete</th>
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+
+            <!-- Additional rows as needed -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    var examIdNow = 1;
+    var examTable;
+    document.addEventListener('DOMContentLoaded', function () {
+
+
+
+        examTable = $('#exams-table').DataTable({
+            responsive: true,
+            "scrollX": true,
+            "pagingType": "full_numbers",
+            "pageLength": 5,
+            "lengthChange": true,
+            "ajax": API_URL + 'Exam/GetAllExams',
+            "columns": [
+                { "data": "examName" },
+                { "data": "examDuration" },
+                {
+                    "data": "examDescription",
+                    //"render": function (data, type, full, meta) {
+                    //    // Display only the first 100 characters followed by "..." if the text exceeds that length
+                    //    return data.length > 10 ? data.substr(0, 10) + "..." : data;
+                    //}
+                },
+                {
+                    "data": "createdAt",
+                    "render": function (data, type, full, meta) {
+                        if (data)
+                            return data.replace('T', ' ');
+                        else return data;
+                    }
+                },
+                {
+                    "data": null, // Edit column
+                    "defaultContent": "<button data-bs-toggle=\"modal\" data-bs-target=\"#modal-question\" class=\"btn btn-info \">Questions</button>",
+                    "orderable": false
+                },
+                {
+                    "data": null, // Edit column
+                    "defaultContent": "<button data-bs-toggle=\"modal\" data-bs-target=\"#modal-edit\" class=\"btn btn-info \">Edit</button>",
+                    "orderable": false
+                },
+                {
+                    "data": null, // Edit column
+                    "defaultContent": "<button data-bs-toggle=\"modal\" data-bs-target=\"#modal-delete-exam\" class=\"btn btn-danger \">Delete</button>",
+                    "orderable": false
+                }
+            ],
+            "lengthMenu": [5, 10, 15, 20],
+            "language": {
+                "paginate": {
+                    "first": '<<',  // Change as per need
+                    "last": '>>',  // Change as per need
+                    "next": '>',  // Change as per need
+                    "previous": '<'  // Change as per need
+                }
+            },
+        });
+
+
+        $('#exams-table tbody').on('click', 'button', function () {
+            var action = this.textContent.trim();
+            var rowData = examTable.row($(this).parents('tr')).data();
+            var examId = rowData['examId'];
+            examIdNow = examId;
+            console.log(examId);
+            if (action === 'Questions') {
+              //  document.getElementById("examIdQuestion").value = examId;
+                $('#question-table').DataTable().ajax.url(API_URL + 'Question/GetAllQuestionsByExamId/' + examIdNow).load();
+                
+            }
+        
+
+           else if (action === 'Edit') {
+                $.ajax({
+                    url: API_URL + "Exam/GetExamById/" + examId,
+                    type: 'GET',
+            
+                    success: function (data) {
+                        var edit = document.getElementById("editExamForm");
+                        populateForm("#editExamForm",data);
+                        console.log("udpated")
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.log('Error fetching user data:', errorThrown);
+                    }
+                });
+            }
+            else if (action === 'Delete') {
+                {
+                    var deleteExamForm = document.querySelector('#deleteExamForm');
+                    if (deleteExamForm) {
+                        deleteExamForm.action = API_URL + "Exam/DeleteExam/" + examId;
+                    }
+                }
+            }
+        });
+
+
+
+
+
+
+
+    });
+
+
+
+
+
+
+
+
+</script>

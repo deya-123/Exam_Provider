@@ -1,0 +1,73 @@
+﻿@model UpdateQuestionOptionViewModel
+
+<form id="editOptionForm" class="" method="post">
+
+
+
+    <div class="mb-3">
+        <label class="form-label" asp-for="Title">Title</label>
+        <textarea asp-for="Title" type="text" class="form-control" placeholder="Enter Title"></textarea>
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="IsCorrect">Is Correct</label>
+        <input asp-for="IsCorrect" type="checkbox" class="form-check-input" placeholder="Is Correct" />
+        <span asp-validation-for="IsCorrect" class="text-danger"></span>
+    </div>
+</form>
+
+
+
+<script>
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        $('#editOptionForm').submit(function (e) {
+            e.preventDefault();
+
+
+            if ($(this).valid()) {
+
+                var formData = $(this).serializeArray().filter(function (item) {
+                    return item.name !== '__RequestVerificationToken';
+                });
+
+
+                var jsonData = {};
+                $(formData).each(function (index, obj) {
+                    jsonData[obj.name] = obj.value;
+                });
+                jsonData['QuestionId'] = questionIdNow;
+                jsonData['OptionId'] = optionIdNow;
+                $.ajax({
+                    type: 'PUT',
+                    url: API_URL + 'QuestionOption/UpdateOption',
+                    contentType: 'application/json',
+                    data: JSON.stringify(jsonData),
+                    success: function (response) {
+                        showSuccessToast('done successfully');
+                        $('#option-table').DataTable().ajax.url(API_URL + 'QuestionOption/GetAllOptionsByQuestionId/' + questionIdNow).load();
+                        
+
+                    },
+                    error: function (xhr, status, error) {
+
+                        var jsonResponse = JSON.parse(xhr.responseText);
+                        alert('Registration failed: ' + jsonResponse.message);
+                        if (jsonResponse.errors) {
+                            Object.keys(jsonResponse.errors).forEach(function (key) {
+                                var errors = jsonResponse.errors[key].join('<br>'); // Join errors with line breaks
+                                $('span[data-valmsg-for="' + key + '"]').addClass('field-validation-error').removeClass('field-validation-valid').html(errors);
+                            });
+                        }
+                    }
+
+                });
+            }
+        });
+
+
+    });
+
+
+</script>

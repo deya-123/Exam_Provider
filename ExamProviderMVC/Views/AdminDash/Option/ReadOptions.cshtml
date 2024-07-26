@@ -1,0 +1,112 @@
+﻿<div class="table-responsive" style="padding-left : 20px;padding-right: 20px;    ">
+    <table id="option-table" class="table card-table table-vcenter text-nowrap datatable" style="width:100%">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Is Correct</th>
+                <th>Created At</th>
+                <th>Edit</th>
+                <th>Delete</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            <!-- Additional rows as needed -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    var optionIdNow = 1;
+    document.addEventListener('DOMContentLoaded', function () {
+
+
+    
+        var table = $('#option-table').DataTable({
+            responsive: true,
+            "scrollX": true,
+            "pagingType": "full_numbers",
+            "pageLength": 5,
+            "lengthChange": true,
+            "ajax": API_URL + 'QuestionOption/GetAllOptionsByQuestionId/'+questionIdNow,
+            "columns": [
+                { "data": "title" },
+                { "data": "isCorrect" },
+                {
+                    "data": "createdAt",
+                    "render": function (data, type, full, meta) {
+                        if (data)
+                            return data.replace('T', ' ');
+                        else return data;
+                    }
+                },
+                {
+                    "data": null, // Edit column
+                    "defaultContent": "<button data-bs-toggle=\"modal\" data-bs-target=\"#modal-edit-option\" class=\"btn btn-info \">Edit</button>",
+                    "orderable": false
+                },
+                {
+                    "data": null, // Edit column
+                    "defaultContent": "<button data-bs-toggle=\"modal\" data-bs-target=\"#modal-delete-option\" class=\"btn btn-danger \">Delete</button>",
+                    "orderable": false
+                }
+            ],
+            "lengthMenu": [5, 10, 15, 20],
+            "language": {
+                "paginate": {
+                    "first": '<<',  // Change as per need
+                    "last": '>>',  // Change as per need
+                    "next": '>',  // Change as per need
+                    "previous": '<'  // Change as per need
+                }
+            },
+        });
+
+
+        $('#option-table tbody').on('click', 'button', function () {
+            var action = this.textContent.trim();
+            var rowData = table.row($(this).parents('tr')).data();
+            var optionId = rowData['optionId'];
+            optionIdNow=optionId;
+            if (action === 'Edit') {
+                $.ajax({
+                    url: API_URL + "QuestionOption/GetOptionById/" + optionId,
+                    type: 'GET',
+                    success: function (data) {
+                        populateForm("#editOptionForm", data);
+                        console.log("udpated")
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.log('Error fetching user data:', errorThrown);
+                    }
+                });
+            }
+            else if (action === 'Delete') {
+                {
+                    var deleteOptionForm = document.querySelector('#deleteOptionForm');
+                    if (deleteOptionForm) {
+                        deleteOptionForm.action = API_URL + "QuestionOption/DeleteOption/" + optionId;
+                    }
+                }
+            }
+        });
+
+
+
+
+
+
+
+
+
+    });
+
+
+
+
+
+
+
+
+</script>

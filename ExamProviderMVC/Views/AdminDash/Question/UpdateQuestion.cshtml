@@ -1,0 +1,82 @@
+﻿@model UpdateQuestionViewModel
+
+<form id="editQuestionForm" class="" method="post">
+
+
+    <div class="mb-3">
+        <label class="form-label" asp-for="QuestionDescription">Description</label>
+        <textarea asp-for="QuestionDescription" type="text" class="form-control" placeholder="Enter Description"></textarea>
+        <span asp-validation-for="QuestionDescription" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="QuestionType">Type</label>
+        <input asp-for="QuestionType" type="text" class="form-control" placeholder="Enter Typ">
+        <span asp-validation-for="QuestionType" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="QuestionLevel">Level</label>
+        <input asp-for="QuestionLevel" type="text" class="form-control" placeholder="Enter Level"/>
+        <span asp-validation-for="QuestionLevel" class="text-danger"></span>
+    </div>
+
+</form>
+
+
+
+<script>
+
+
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        $('#editQuestionForm').submit(function (e) {
+            e.preventDefault();
+
+
+            if ($(this).valid()) {
+
+                var formData = $(this).serializeArray().filter(function (item) {
+                    return item.name !== '__RequestVerificationToken';
+                });
+
+
+                var jsonData = {};
+                $(formData).each(function (index, obj) {
+                    jsonData[obj.name] = obj.value;
+                });
+                jsonData['ExamId'] = examIdNow;
+                jsonData['QuestionId'] = questionIdNow;
+                $.ajax({
+                    type: 'PUT',
+                    url: API_URL + 'Question/UpdateQuestion',
+                    contentType: 'application/json',
+                    data: JSON.stringify(jsonData),
+                    success: function (response) {
+                
+                     showSuccessToast('done successfully');
+                        $('#question-table').DataTable().ajax.url(API_URL + 'Question/GetAllQuestionsByExamId/' + examIdNow).load();
+
+
+                    },
+                    error: function (xhr, status, error) {
+
+                        var jsonResponse = JSON.parse(xhr.responseText);
+                        alert('Registration failed: ' + jsonResponse.message);
+                        if (jsonResponse.errors) {
+                            Object.keys(jsonResponse.errors).forEach(function (key) {
+                                var errors = jsonResponse.errors[key].join('<br>'); // Join errors with line breaks
+                                $('span[data-valmsg-for="' + key + '"]').addClass('field-validation-error').removeClass('field-validation-valid').html(errors);
+                            });
+                        }
+                    }
+
+                });
+            }
+        });
+
+
+    });
+
+
+</script>

@@ -1,0 +1,79 @@
+﻿@model CreateExamViewModels
+
+<form id="createExamForm" class=""  method="post">
+
+
+    <div class="mb-3">
+        <label class="form-label" asp-for="ExamName">Name</label>
+        <input asp-for="ExamName" type="text" class="form-control" placeholder="Enter Name">
+        <span asp-validation-for="ExamName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="ExamDuration">Duration</label>
+        <input asp-for="ExamDuration" type="text" class="form-control" placeholder="Enter Duration">
+        <span asp-validation-for="ExamDuration" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="ExamDescription">Description</label>
+        <textarea asp-for="ExamDescription" type="text" class="form-control" placeholder="Enter Duration"></textarea>
+        <span asp-validation-for="ExamDescription" class="text-danger"></span>
+    </div>
+
+</form>
+
+
+
+    <script>
+
+
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+        $('#createExamForm').submit(function (e) {
+            e.preventDefault();
+
+        
+            if ($(this).valid()) {
+              
+                var formData = $(this).serializeArray().filter(function (item) {
+                    return item.name !== '__RequestVerificationToken';
+                });
+
+              
+                var jsonData = {};
+                $(formData).each(function (index, obj) {
+                    jsonData[obj.name] = obj.value;
+                });
+            $.ajax({
+               type: 'POST',
+               url: API_URL + 'Exam/CreateExam',
+                contentType: 'application/json',
+                    data: JSON.stringify(jsonData),
+                success: function(response) {
+                        showSuccessToast('done successfully');
+                                $('#exams-table').DataTable().ajax.reload();
+                        
+                 
+                },
+                error: function(xhr, status, error) {
+              
+                    var jsonResponse = JSON.parse(xhr.responseText);
+                    alert('Registration failed: ' + jsonResponse.message);
+                    if (jsonResponse.errors) {
+                        Object.keys(jsonResponse.errors).forEach(function(key) {
+                            var errors = jsonResponse.errors[key].join('<br>'); // Join errors with line breaks
+                            $('span[data-valmsg-for="' + key + '"]').addClass('field-validation-error').removeClass('field-validation-valid').html(errors);
+                        });
+                    }
+                }
+
+            });
+            }
+        });
+
+       
+        });
+
+
+    </script>

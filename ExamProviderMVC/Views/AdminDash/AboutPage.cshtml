@@ -1,0 +1,134 @@
+﻿@{
+
+
+    Layout = "~/Views/Shared/_DashboardLayoutAdmin.cshtml";
+}
+
+
+@model UpdateCompanyInfoViewModel
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <!-- Page pre-title -->
+                @*  <div class="page-pretitle">
+                Overview
+                </div>*@
+                <h2 class="page-title">
+                    Company Info Page
+                </h2>
+            </div>
+            <!-- Page title actions -->
+            <div class="col-auto ms-auto d-print-none">
+                <div class="btn-list">
+                    @*  <span class="d-none d-sm-inline">
+                    <a href="#" class="btn">
+                    New view
+                    </a>
+                    </span>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-body">
+    <div class="container-xl">
+
+
+        <form id="editCompanyForm" class="card">
+    
+            <div class="card-body">
+                <h3 class="card-title">Edit Company Info</h3>
+                <div class="row row-cards">
+                    <div class="col-sm-6 col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="OrganizationName">Organization Name</label>
+                            <input asp-for="OrganizationName" type="text" class="form-control" placeholder="Enter Name">
+                            <span asp-validation-for="OrganizationName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="Description">Description</label>
+                            <input asp-for="Description" type="text" class="form-control" placeholder="Enter Description">
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div class="card-footer text-end">
+                <button type="submit" class="btn btn-primary">Update Info</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var jsonData = {};
+            $.ajax({
+                url: API_URL + "CompanyInfo/GetCompanyInfoById/5",
+                type: 'GET',
+
+                success: function (data) {
+                    $.each(data, function (key, value) {
+                        jsonData[key.charAt(0).toUpperCase() + key.slice(1)] = value;
+                    });
+                    populateForm("#editCompanyForm", data);
+                    console.log("udpated")
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log('Error fetching user data:', errorThrown);
+                }
+            });
+
+            $('#editCompanyForm').submit(function (event) {
+
+                event.preventDefault();
+                if ($(this).valid()) {
+                    var formData = $(this).serializeArray();
+
+                    $(formData).each(function (index, obj) {
+                        jsonData[obj.name] = obj.value;
+                    });
+                    jsonData['companyInfoId']=5;
+                    $.ajax({
+                        url: API_URL + "CompanyInfo/UpdateCompanyInfo",
+                        type: 'PUT',
+                        contentType: 'application/json',
+                        data: JSON.stringify(jsonData),
+                        success: function (response) {
+
+
+                            showSuccessToast('done successfully'); 
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+
+                            console.error('Error creating user:', errorThrown);
+                        }
+                    });
+                }
+            });
+
+
+        });
+
+
+
+
+
+
+
+
+    </script>
+}

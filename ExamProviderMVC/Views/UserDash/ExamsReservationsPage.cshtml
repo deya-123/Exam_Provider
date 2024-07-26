@@ -1,0 +1,343 @@
+﻿@{
+
+
+    Layout = "~/Views/Shared/_DashboardLayoutUser.cshtml";
+}
+
+@model UserViewModel
+
+
+
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <!-- Page pre-title -->
+                @*  <div class="page-pretitle">
+                Overview
+                </div>*@
+                <h2 class="page-title">
+                    Exams Reservations Page
+                </h2>
+            </div>
+            <!-- Page title actions -->
+            <div class="col-auto ms-auto d-print-none">
+                <div class="btn-list">
+                    @*  <span class="d-none d-sm-inline">
+                    <a href="#" class="btn">
+                    New view
+                    </a>
+                    </span>*@
+                @*    <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-create">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                        Create new User
+                    </a>*@
+                    <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+
+        <div class="card">
+            <div class="table-responsive" style="padding : 20px; ">
+                <table id="example" class="table card-table table-vcenter text-nowrap datatable" style="width:100%">
+                    <thead>
+                        <tr>
+                          
+                            <th>Exam Name</th>
+                            <th>Score Mark</th>
+                            <th>Created At</th>
+                            <th>Details</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <!-- Additional rows as needed -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal modal-blur fade" id="modal-delete" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            <div class="modal-body text-center py-4">
+                <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+                <form id="deleteUserForm" class="" asp-action="Delete" asp-controller="Users" method="post">
+                    <h3>Are you sure?</h3>
+                    <div class="text-muted">Do you really want to remove this Student? What you've done cannot be undone.</div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="w-100">
+                    <div class="row">
+                        <div class="col">
+                            <a href="#" class="btn w-100" data-bs-dismiss="modal">
+                                Cancel
+                            </a>
+                        </div>
+                        <div class="col">
+                            <button type="submit" form="deleteUserForm" class="btn btn-danger w-100">
+                                Confirm
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-blur fade" id="modal-edit" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editUserForm" class="" asp-action="Edit" asp-controller="Users" method="post">
+
+                    <input id="userIdCreateForm" asp-for="UserId" type="text" style="display:none">
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="UserName">Name</label>
+                        <input id="userNameCreateForm" readonly asp-for="UserName" type="text" class="form-control" placeholder="Enter Name">
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="UserEmail">Email</label>
+                        <input id="userIdEmailForm" readonly asp-for="UserEmail" type="text" class="form-control" placeholder="Enter Email">
+                        <span asp-validation-for="UserEmail" class="text-danger"></span>
+                    </div>
+                   
+                  @*  <div class="mb-3">
+                        <label class="form-label" asp-for="UserPassword">Password</label>
+                        <div class="input-group input-group-flat">
+                            <input readonly asp-for="UserPassword" type="password" class="form-control" placeholder="Password" autocomplete="off">
+                            <span class="input-group-text">
+                                <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+                                </a>
+                            </span>
+                        </div>
+                        <span asp-validation-for="UserPassword" class="text-danger"></span>
+                    </div>*@
+                    
+                   
+                    @*
+                    <div class="form-footer">
+                    <button type="submit" class="btn btn-primary w-100">Create new account</button>
+                    </div>
+                    *@
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+@*                <button type="submit" form="editUserForm" class="btn btn-primary ms-auto">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                    Edit
+                </button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-blur fade" id="modal-create" tabindex="-1" style="display: none;" aria-modal="true">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <form id="createUserForm" class="" asp-action="Create" asp-controller="Users" method="post">
+
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="UserName">Name</label>
+                        <input asp-for="UserName" type="text" class="form-control" placeholder="Enter Name">
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="UserEmail">Email</label>
+                        <input asp-for="UserEmail" type="text" class="form-control" placeholder="Enter Email">
+                        <span asp-validation-for="UserEmail" class="text-danger"></span>
+                    </div>
+                
+                    @*
+                    <div class="form-footer">
+                    <button type="submit" class="btn btn-primary w-100">Create new account</button>
+                    </div>
+                    *@
+                </form>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                <button type="submit" form="createUserForm" class="btn btn-primary ms-auto">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                    Create new User
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+
+    <script>
+
+
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+
+            
+         
+
+            var table = $('#example').DataTable({
+                responsive: true,
+                "scrollX": true,
+                "pagingType": "full_numbers",
+                "pageLength": 5,
+                "lengthChange": true,
+                "ajax": API_URL + 'UserExam/GetAllExamsReservationsByStudentId/'+localStorage.getItem("userId"),
+                "columns": [
+                
+                    { "data": "examName" },
+                    { "data": "scoreMark" },
+                    {
+                        "data": "createdAt",
+                        "render": function (data, type, full, meta) {
+                            return data.replace('T', ' ');
+                        }
+                    },
+                    {
+                        "data": null,
+                        "defaultContent": "<button data-bs-toggle=\"modal\" data-bs-target=\"#modal-delete\" class=\"btn btn-info \">Details</button>",
+                        "orderable": false
+                    }
+              
+
+                ],
+                "lengthMenu": [5, 10, 15, 20],
+                "language": {
+                    "paginate": {
+                        "first": '<<',  // Change as per need
+                        "last": '>>',  // Change as per need
+                        "next": '>',  // Change as per need
+                        "previous": '<'  // Change as per need
+                    }
+                },
+               
+
+            });
+
+            //$('#example tbody').on('click', 'button', function () {
+            //    var action = this.textContent.trim();
+            //    var rowData = table.row($(this).parents('tr')).data();
+            //    var userId = rowData['userId']; 
+
+            //        if (action === 'Delete')
+            //        {
+            //            var deleteForm = document.querySelector('#deleteUserForm');
+            //            if (deleteForm) {
+            //                deleteForm.action = API_URL+"UserInfo/DeleteUserInfo/" + userId;
+            //            }
+            //    }
+            //});
+       
+        
+            //$('#deleteUserForm').submit(function (event) {
+                 
+            //    event.preventDefault();
+            //    if ($(this).valid()) {
+                  
+            //        $.ajax({
+            //            url: $(this).attr('action'),
+            //            type: 'Delete',
+            //            success: function (response) {
+                        
+            //                $('.datatable').DataTable().ajax.reload();
+            //                console.log('User created successfully.');
+            //            },
+            //            error: function (xhr, textStatus, errorThrown) {
+                           
+            //                console.error('Error creating user:', errorThrown);
+            //            }
+            //        });
+            //    }
+            //});
+
+
+        });
+
+
+
+
+
+
+
+
+    </script>
+}
+
+
+    <style>
+        .dataTables_wrapper .dataTable .btn {
+            height: auto;  // Adjust button heights
+            padding: 0.375rem 0.75rem;  // Bootstrap 4 padding style
+        }
+                .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 1.2em 0.4em;  // Increase padding around buttons
+            color: #007bff;  // Change the text color
+            background-color: #ffffff;  // Change background color
+            border: 1px solid #ddd;  // Add border
+            margin-right: 5px;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            color: #fff;  // Change text color for active/hover
+            background-color: #007bff;  // Change background color for active/hover
+            border-color: #007bff;  // Change border color for active/hover
+        }
+        div.dataTables_wrapper div.dataTables_info {
+            padding-top: 1.85em;
+        }
+                .dataTables_filter input {
+            height: 36px;  /* Increase input height */
+            padding: 6px 12px;  /* Adjust padding for better visual appearance */
+            font-size: 14px;  /* Optional: Increase font size if needed */
+        }
+    </style>
