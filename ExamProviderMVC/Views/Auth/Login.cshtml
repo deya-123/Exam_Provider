@@ -93,6 +93,8 @@
                             showSuccessToast('Login successful');
                             localStorage.setItem("userId", jsonResponse.data.userId);
                             localStorage.setItem("userName", jsonResponse.data.userName);
+                            localStorage.setItem("userEmail", jsonResponse.data.userEmail);
+                            localStorage.setItem("userPassword", jsonResponse.data.userPassword);
                             console.log(jsonResponse);
                             if(jsonResponse.data.roleId==1){
                              window.location.href = '@Url.Action("UsersPage", "AdminDash")';

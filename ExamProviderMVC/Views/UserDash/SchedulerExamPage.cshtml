@@ -30,7 +30,7 @@
 
 <div class="page-body">
     <div class="container-xl">
-        <form id="editUserForm" class="card">
+        <form  class="card">
             <input type="text" style="display:none">
             <div class="card-body">
                 <h3 class="card-title"></h3>
@@ -52,7 +52,7 @@
                 </div>
             </div>
             <div class="card-footer text-end">
-                <button type="submit" class="btn btn-primary">Scheduler</button>
+                <button type="button" id="button-scheduler" class="btn btn-primary">Scheduler</button>
             </div>
         </form>
     </div>
@@ -61,6 +61,9 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+          
+            
+            
             $.ajax({
                 url: API_URL + 'Exam/GetAllExams',
                 type: 'GET',
@@ -88,23 +91,65 @@
                 }
             });
 
-            //$('#editUserForm').submit(function (event) {
-            //    event.preventDefault();
-            //    if ($(this).valid()) {
-            //        var formData = $(this).serialize();
-            //        $.ajax({
-            //            url:  API_URL + "UserInfo/UpdateUserInfo/" + localStorage.getItem('userId'),
-            //            type: 'PUT',
-            //            data: formData,
-            //            success: function (response) {
-            //                console.log('User created successfully.');
-            //            },
-            //            error: function (xhr, textStatus, errorThrown) {
-            //                console.error('Error creating user:', errorThrown);
-            //            }
-            //        });
-            //    }
-            //});
+            $('#button-scheduler').click(function (event) {
+               
+                    var formData ={
+                     userEmail:localStorage.getItem("userEmail"),
+                     userPassword:localStorage.getItem("userPassword")
+                    
+                    }
+                $.ajax({
+                    url: API_URL + "Auth/GenerateExamGuardianToken",
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        console.log('User created successfully.', response);
+
+                        $.ajax({
+                            url: API_URL_EXAM_GARD + "Auth/GetStudentDash",
+                            headers: {
+                                'Authorization': 'Bearer ' + response
+                            },
+                            type: 'GET',
+                            contentType: 'application/json',
+                            //data: JSON.stringify(formData),
+                            success: function (response) {
+                                var selectedExamValue = document.getElementById('examDropdown').value;
+
+                                // Find the option with the selected value and get its text
+                                var examDropdown = document.getElementById('examDropdown');
+                                var selectedExamText = "";
+                                for (var i = 0; i < examDropdown.options.length; i++) {
+                                    if (examDropdown.options[i].value === selectedExamValue) {
+                                        selectedExamText = examDropdown.options[i].text;
+                                        break;
+                                    }
+                                }
+                                console.log(selectedExamText)
+                                // Append the selected exam name to the response URL
+                                var responseUrl = new URL(response);
+                                responseUrl.searchParams.append('exam', encodeURIComponent(selectedExamText));
+                                console.log(responseUrl)
+                                window.open(responseUrl, '_blank');
+                                
+
+                            },
+                            error: function (xhr, textStatus, errorThrown) {
+                                console.error('Error creating user:', errorThrown);
+                            }
+                        });
+
+
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error('Error creating user:', errorThrown);
+                    }
+                });
+                
+            });
+
+
         });
     </script>
 }

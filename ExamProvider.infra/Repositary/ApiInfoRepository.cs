@@ -5,6 +5,7 @@ using ExamProvider.core.ICommon;
 using ExamProvider.core.IRepositary;
 using ExamProvider.infra.Mapper;
 using ExamProvider.infra.Utilities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -17,9 +18,12 @@ namespace ExamProvider.infra.Repositary
     public class ApiInfoRepository : IApiInfoRepository
     {
         private readonly IDbContext _dbContext;
-        public ApiInfoRepository(IDbContext dbContext)
+        private readonly ModelContext _modelContext;
+
+        public ApiInfoRepository(IDbContext dbContext, ModelContext modelContext)
         {
             _dbContext = dbContext;
+            _modelContext = modelContext;
             SetupMappings();
         }
         private void SetupMappings()
@@ -57,7 +61,20 @@ namespace ExamProvider.infra.Repositary
             var res = await _dbContext.Connection.QueryAsync<ApiServiceDTO>(ApiServicePackageConstant.API_SERVICE_PACKAGE_GET_ALL_SERVICES, commandType: CommandType.StoredProcedure);
             return res.ToList();
         }
+     
 
+
+        public async Task<string> GetKeyByServiceName(string serviceName= "exam guardian")
+        {
+            var apiKey = await _modelContext.ApiServices.
+                FirstOrDefaultAsync(e => e.ServiceName != null&& e.ServiceName.ToLower() == serviceName.ToLower());
+
+            if (apiKey is null || apiKey.UniqueKey is null) {
+
+                throw new InvalidOperationException("API key not found.");
+            }
+            return apiKey.UniqueKey;
+        }
         public async Task<ApiServiceDTO> GetApiInfoById(decimal id)
         {
             DynamicParameters param = new();

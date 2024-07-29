@@ -12,6 +12,7 @@ namespace ExamProviderMVC.ViewModels
         public string? ExamName { get; set; }
         public decimal? ExamDuration { get; set; }
         public string? ExamDescription { get; set; }
+        public decimal? Price{ get; set; }
     }
 
 }

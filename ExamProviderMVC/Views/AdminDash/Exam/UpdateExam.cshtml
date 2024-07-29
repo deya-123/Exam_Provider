@@ -18,7 +18,11 @@
         <textarea asp-for="ExamDescription" type="text" class="form-control" placeholder="Enter Duration"></textarea>
         <span asp-validation-for="ExamDescription" class="text-danger"></span>
     </div>
-
+    <div class="mb-3">
+        <label class="form-label" asp-for="Price">Price</label>
+        <input asp-for="Price" type="number" class="form-control" placeholder="Enter Price" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
 </form>
 
 

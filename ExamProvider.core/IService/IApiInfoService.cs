@@ -15,5 +15,6 @@ namespace ExamProvider.core.IService
         Task CreateApiInfo(CreateApiServiceDTO apiservice);
         Task UpdateApiInfo(UpdateApiServiceDTO apiservice);
         Task DeleteApiInfo(decimal id);
+         Task<string> GetKeyByServiceName(string serviceName = "exam guardian");
     }
 }

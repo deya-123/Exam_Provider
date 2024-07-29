@@ -4,6 +4,7 @@ using ExamProvider.core.IService;
 using ExamProvider.infra.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ExamProvider.Controllers
 {
@@ -12,10 +13,11 @@ namespace ExamProvider.Controllers
     public class UserInfoController : ControllerBase
     {
         private readonly IUserInfoService _userInfoService;
-
-        public UserInfoController(IUserInfoService userInfoService)
+        private readonly IApiInfoService _apiInfoService;
+        public UserInfoController(IUserInfoService userInfoService,IApiInfoService apiInfoService)
         {
             _userInfoService = userInfoService;
+            _apiInfoService = apiInfoService;
         }
         [HttpPost]
         public async Task CreateUserInfo(CreateUserInfoDTO userInfo)
@@ -43,10 +45,68 @@ namespace ExamProvider.Controllers
         {
             return await _userInfoService.GetUserInfoById(id);
         }
+
+
+        [HttpGet]
+        [Route("{key}")]
+        public async Task<UserInfoDTO> GetUserInfoById(string key,decimal id)
+        {
+            var apiKey =await _apiInfoService.GetKeyByServiceName();
+            if (apiKey == null)
+            {  
+                throw new InvalidOperationException("API key not found.");
+            }
+
+            if (key != apiKey)
+            {
+                throw new UnauthorizedAccessException("Invalid API key.");
+            }
+
+
+            return await _userInfoService.GetUserInfoById(id);
+        }
+        [HttpGet("{key}")]
+        public async Task<ApiResponse<StudentDTO>> GetStudentInfoById(string key,decimal id)
+        {
+            var apiKey = await _apiInfoService.GetKeyByServiceName();
+            if (apiKey == null)
+            {
+                throw new InvalidOperationException("API key not found.");
+            }
+
+            if (key != apiKey)
+            {
+                throw new UnauthorizedAccessException("Invalid API key.");
+            }
+
+            return new ApiResponse<StudentDTO>(await _userInfoService.GetStudentInfoById(id));
+        }
+
+
         [HttpGet]
         public async Task<ApiResponse<List<StudentDTO>>> GetStudents()
         {
-            return  new ApiResponse<List<StudentDTO>>(await _userInfoService.GetStudents());
+            return new ApiResponse<List<StudentDTO>>(await _userInfoService.GetStudents());
         }
+
+        [HttpGet("{key}")]
+        public async Task<ApiResponse<StudentDTO>> GetStudentInfoByEmail(string key,string email)
+        {
+            var apiKey = await _apiInfoService.GetKeyByServiceName();
+            if (apiKey == null)
+            {
+                throw new InvalidOperationException("API key not found.");
+            }
+
+            if (key != apiKey)
+            {
+                throw new UnauthorizedAccessException("Invalid API key.");
+            }
+
+            return new ApiResponse<StudentDTO>(await _userInfoService.GetStudentInfoByEmail(email));
+        }
+
+  
+
     }
 }

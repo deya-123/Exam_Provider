@@ -17,5 +17,7 @@ namespace ExamProvider.core.IService
         Task UpdateUserInfo(UpdateUserInfoDTO userInfo);
         Task DeleteUserInfo(decimal id);
         Task<List<StudentDTO>> GetStudents();
+        Task<StudentDTO> GetStudentInfoByEmail(string email);
+        Task<StudentDTO> GetStudentInfoById(decimal id);
     }
 }

@@ -42,6 +42,21 @@ namespace ExamProvider.infra.Service
            return await _examRepositary.GetExamById(id);
         }
 
+        public async Task<ExamDTO> GetExamByName(string examName)
+        {
+            return await _examRepositary.GetExamByName(examName);
+        }
+
+        public async Task<List<ExamDetailsWithoutAnwersDTO>> GetExamDetailsWithoutAnwersByName(string examName)
+        {
+            return await _examRepositary.GetExamDetailsWithoutAnwersByName(examName);
+        }
+
+        public async Task<List<Exam>> GetExamsByName(string examName)
+        {
+            return await _examRepositary.GetExamsByName(examName);
+        }
+
         public async Task<List<ExamDTO>> SearchBetweenInterval(DateTime? firstDate, DateTime? secondDate)
         {
             return await _examRepositary.SearchBetweenInterval(firstDate, secondDate);

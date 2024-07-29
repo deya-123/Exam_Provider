@@ -12,6 +12,7 @@ namespace ExamProvider.core.DTO
         public string? ExamName { get; set; }
         public decimal? ExamDuration { get; set; }
         public string? ExamDescription { get; set; }
+        public decimal? Price { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }

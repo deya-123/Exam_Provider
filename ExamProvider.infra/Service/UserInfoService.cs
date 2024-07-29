@@ -39,7 +39,14 @@ namespace ExamProvider.infra.Service
         {
            return await _userInfoRepository.GetUserInfoById(id);
         }
-
+        public async Task<StudentDTO> GetStudentInfoById(decimal id)
+        {
+            return await _userInfoRepository.GetStudentInfoById(id);
+        }
+        public async Task<StudentDTO> GetStudentInfoByEmail(string email)
+        {
+            return await _userInfoRepository.GetStudentInfoByEmail(email);
+        }
         public async Task<List<UserInfoDTO>> GetUsersInfo()
         {
             return await _userInfoRepository.GetUsersInfo();

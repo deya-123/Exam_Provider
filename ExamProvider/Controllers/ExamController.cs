@@ -12,10 +12,11 @@ namespace ExamProvider.Controllers
     public class ExamController : ControllerBase
     {
         private readonly IExamService _examService;
-
-        public ExamController(IExamService examService)
+        private readonly IApiInfoService _apiInfoService;
+        public ExamController(IExamService examService, IApiInfoService apiInfoService)
         {
             _examService = examService;
+            _apiInfoService = apiInfoService;
         }
 
         [HttpPost]
@@ -55,6 +56,60 @@ namespace ExamProvider.Controllers
         {
             return await _examService.GetExamById(id);
         }
+
+        [HttpGet]
+        [Route("{key}")]
+        public async Task<ApiResponse<ExamDTO>> GetExamByName(string key, string examName)
+        {
+            var apiKey = await _apiInfoService.GetKeyByServiceName();
+            if (apiKey == null)
+            {
+                throw new InvalidOperationException("API key not found.");
+            }
+
+            if (key != apiKey)
+            {
+                throw new UnauthorizedAccessException("Invalid API key.");
+            }
+
+            return new ApiResponse<ExamDTO>(await _examService.GetExamByName(examName));
+        }
+
+        [HttpGet("{key}")]
+ 
+        public async Task<ApiResponse<List<Exam>>> GetExamDetailsByName(string key,string examName)
+        {
+            var apiKey = await _apiInfoService.GetKeyByServiceName();
+            if (apiKey == null)
+            {
+                throw new InvalidOperationException("API key not found.");
+            }
+
+            if (key != apiKey)
+            {
+                throw new UnauthorizedAccessException("Invalid API key.");
+            }
+
+            return new ApiResponse<List<Exam>>( await _examService.GetExamsByName(examName));
+        }
+
+        [HttpGet("{key}")]
+        public async Task<ApiResponse<List<ExamDetailsWithoutAnwersDTO>>> GetExamDetailsWithoutAnwersByName(string key, string examName)
+        {
+            var apiKey = await _apiInfoService.GetKeyByServiceName();
+            if (apiKey == null)
+            {
+                throw new InvalidOperationException("API key not found.");
+            }
+
+            if (key != apiKey)
+            {
+                throw new UnauthorizedAccessException("Invalid API key.");
+            }
+
+            return new ApiResponse<List<ExamDetailsWithoutAnwersDTO>>(await _examService.GetExamDetailsWithoutAnwersByName(examName));
+        }
+        
         [HttpGet]
         public async Task<ApiResponse<List<ExamDTO>>> SearchBetweenInterval(DateTime? startDate, DateTime? endDate)
         {

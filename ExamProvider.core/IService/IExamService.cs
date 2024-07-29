@@ -17,5 +17,8 @@ namespace ExamProvider.core.IService
         Task DeleteExam(decimal id);
         Task<List<ExamDTO>> SearchBetweenInterval(DateTime? firstDate, DateTime? secondDate);
         Task<List<ExamDTO>> SearchSpecificDate(DateTime specificDate);
+        Task<List<Exam>> GetExamsByName(string examName);
+        Task<ExamDTO> GetExamByName(string examName);
+        Task<List<ExamDetailsWithoutAnwersDTO>> GetExamDetailsWithoutAnwersByName(string examName);
     }
 }

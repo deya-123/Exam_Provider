@@ -22,7 +22,7 @@ namespace ExamProvider.infra.Utilities
         public const string V_EXAM_NAME = "V_EXAM_NAME";
         public const string V_EXAM_DURATION = "V_EXAM_DURATION";
         public const string V_EXAM_DESCRIPTION = "V_EXAM_DESCRIPTION";
-
+        public const string V_EXAM_PRICE = "V_EXAM_PRICE";
         public const string V_FIRST_DATE = "V_FIRST_DATE";
         public const string V_SECOND_DATE = "V_SECOND_DATE";
         public const string V_SPECIFIC_DATE = "V_SPECIFIC_DATE";

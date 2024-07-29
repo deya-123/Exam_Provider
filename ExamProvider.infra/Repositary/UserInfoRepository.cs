@@ -93,6 +93,45 @@ namespace ExamProvider.infra.Repositary
                CreatedAt = e.CreatedAt,
            }).ToListAsync();
         }
+
+        public async Task<StudentDTO> GetStudentInfoByEmail(string email)
+        {
+            var student= await _modelContext.UserInfos.Where(e => e.RoleId == 2 && e.UserEmail==email).Select(e => new StudentDTO
+            {
+                UserId = e.UserId,
+                UserName = e.UserName,
+                UserEmail = e.UserEmail,
+                BirthDate = e.BirthDate != null ? e.BirthDate.Value.Date.ToLongDateString() : null,
+                CreatedAt = e.CreatedAt,
+            }).FirstOrDefaultAsync();
+
+            if (student is null) {
+
+                throw new Exception("");
+            
+            }
+            return student;
+        }
+
+        public async Task<StudentDTO> GetStudentInfoById(decimal id)
+        {
+            var student = await _modelContext.UserInfos.Where(e => e.RoleId == 2 && e.UserId == id).Select(e => new StudentDTO
+            {
+                UserId = e.UserId,
+                UserName = e.UserName,
+                UserEmail = e.UserEmail,
+                BirthDate = e.BirthDate != null ? e.BirthDate.Value.Date.ToLongDateString() : null,
+                CreatedAt = e.CreatedAt,
+            }).FirstOrDefaultAsync();
+
+            if (student is null)
+            {
+
+                throw new Exception("");
+
+            }
+            return student;
+        }
     }
 }
 

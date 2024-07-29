@@ -37,6 +37,7 @@ namespace ExamProvider.infra.Repositary
             param.Add(name: ExamPackageConstant.V_EXAM_NAME, value: exam.ExamName, dbType: DbType.String, direction: ParameterDirection.Input);
             param.Add(name: ExamPackageConstant.V_EXAM_DURATION, value: exam.ExamDuration, dbType: DbType.Decimal, direction: ParameterDirection.Input);
             param.Add(name: ExamPackageConstant.V_EXAM_DESCRIPTION, value: exam.ExamDescription, dbType: DbType.String, direction: ParameterDirection.Input);
+            param.Add(name: ExamPackageConstant.V_EXAM_PRICE, value: exam.Price, dbType: DbType.String, direction: ParameterDirection.Input);
 
             await _dbContext.Connection.ExecuteAsync(ExamPackageConstant.EXAM_PACKAGE_CREATE_EXAM, param, commandType: CommandType.StoredProcedure);
         }
@@ -48,6 +49,7 @@ namespace ExamProvider.infra.Repositary
             param.Add(name: ExamPackageConstant.V_EXAM_NAME, value: exam.ExamName, dbType: DbType.String, direction: ParameterDirection.Input);
             param.Add(name: ExamPackageConstant.V_EXAM_DURATION, value: exam.ExamDuration, dbType: DbType.Decimal, direction: ParameterDirection.Input);
             param.Add(name: ExamPackageConstant.V_EXAM_DESCRIPTION, value: exam.ExamDescription, dbType: DbType.String, direction: ParameterDirection.Input);
+            param.Add(name: ExamPackageConstant.V_EXAM_PRICE, value: exam.Price, dbType: DbType.String, direction: ParameterDirection.Input);
 
             await _dbContext.Connection.ExecuteAsync(ExamPackageConstant.EXAM_PACKAGE_UPDATE_EXAM, param, commandType: CommandType.StoredProcedure);
         }
@@ -66,6 +68,78 @@ namespace ExamProvider.infra.Repositary
 
             return res.ToList();
         }
+
+        public async Task<ExamDTO> GetExamByName(string examName)
+        {
+            var exam = await _modelContext.Exams.Where(e => e.ExamName != null && e.ExamName.ToLower() == examName.ToLower()) 
+                .Select(e => new ExamDTO()
+                {
+                    ExamId = e.ExamId,
+                    ExamName = e.ExamName,
+                    ExamDescription = e.ExamDescription,
+                    ExamDuration = e.ExamDuration,
+                    Price=e.Price
+             
+                }).FirstOrDefaultAsync();
+            if (exam is null) {
+                throw new Exception("exam is null");
+            }
+            return exam;
+        }
+        public async Task<List<Exam>> GetExamsByName(string examName)
+        {
+            var exam = await _modelContext.Exams.Include(e=>e.Questions)
+                .ThenInclude(e=>e.QuestionOptions)
+                .Where(e => e.ExamName == examName).ToListAsync();
+                //.Select(e => new ExamDTO()
+                //{
+                //    ExamId = e.ExamId,
+                //    ExamName = e.ExamName,
+                //    ExamDescription = e.ExamDescription,
+                //    ExamDuration = e.ExamDuration,
+                //    CreatedAt = e.CreatedAt,
+                //}).FirstOrDefaultAsync();
+            if (exam is null)
+            {
+                throw new Exception("");
+            }
+            return exam;
+        }
+
+        public async Task<List<ExamDetailsWithoutAnwersDTO>> GetExamDetailsWithoutAnwersByName(string examName)
+        {
+
+            var exam = await _modelContext.Exams
+                .Include(e => e.Questions)
+                .ThenInclude(e => e.QuestionOptions)
+                .Where(e => e.ExamName == examName)
+                .Select(e => new ExamDetailsWithoutAnwersDTO {
+                    ExamDescription = e.ExamDescription,
+                    ExamDuration = e.ExamDuration,
+                    ExamName = e.ExamName,
+                    Questions = e.Questions.Select(q => new QuestionWithoutAnswerDTO {
+                        QuestionDescription = q.QuestionDescription,
+                        QuestionLevel = q.QuestionLevel,
+                        QuestionId = q.QuestionId,
+                        ExamId = q.ExamId,
+                        Options = q.QuestionOptions.Select(e => new OptionWithoutAnswerDTO {
+                            Title = e.Title,
+                            OptionId = e.OptionId
+                        })
+
+                    })
+
+                }).ToListAsync();
+       
+            if (exam is null)
+            {
+                throw new Exception("");
+            }
+            return exam;
+        }
+
+
+
 
         public async Task<ExamDTO> GetExamById(decimal id)
         {

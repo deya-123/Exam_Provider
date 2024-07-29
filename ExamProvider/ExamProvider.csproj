@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\ExamController.cs\**" />
+    <Content Remove="Controllers\ExamController.cs\**" />
+    <EmbeddedResource Remove="Controllers\ExamController.cs\**" />
+    <None Remove="Controllers\ExamController.cs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.31">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

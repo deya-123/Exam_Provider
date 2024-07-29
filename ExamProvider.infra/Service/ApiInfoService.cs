@@ -41,9 +41,15 @@ namespace ExamProvider.infra.Service
           return  await _apiInfoRepository.GetApiInfoById(id);
         }
 
+        public async Task<string> GetKeyByServiceName(string serviceName = "exam guardian")
+        {
+            return await _apiInfoRepository.GetKeyByServiceName(serviceName);
+        }
+
         public async Task UpdateApiInfo(UpdateApiServiceDTO updateApiServiceDTO)
         {
             await _apiInfoRepository.UpdateApiInfo(updateApiServiceDTO);
         }
+
     }
 }

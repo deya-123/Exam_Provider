@@ -133,6 +133,9 @@ namespace ExamProvider.core.Data
                 entity.Property(e => e.ExamDuration)
                     .HasColumnType("NUMBER(38)")
                     .HasColumnName("EXAM_DURATION");
+                entity.Property(e => e.Price)
+                    .HasColumnType("NUMBER(5,2)")
+                    .HasColumnName("PRICE");
 
                 entity.Property(e => e.ExamName)
                     .HasMaxLength(50)

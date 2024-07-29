@@ -16,6 +16,7 @@ namespace ExamProviderMVC.ViewModels
         public decimal? ExamDuration { get; set; }
         [Required(ErrorMessage = "Exam Description is required")]
         public string? ExamDescription { get; set; }
+        public decimal? Price { get; set; }
     }
 
 }
