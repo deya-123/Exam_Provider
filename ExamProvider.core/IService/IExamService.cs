@@ -20,5 +20,7 @@ namespace ExamProvider.core.IService
         Task<List<Exam>> GetExamsByName(string examName);
         Task<ExamDTO> GetExamByName(string examName);
         Task<List<ExamDetailsWithoutAnwersDTO>> GetExamDetailsWithoutAnwersByName(string examName);
+        Task UpdateState(decimal id, string state);
+        Task<List<ExamDTO>> GetAllActiveExams();
     }
 }

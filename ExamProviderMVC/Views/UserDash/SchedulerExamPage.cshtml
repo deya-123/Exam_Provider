@@ -65,7 +65,7 @@
             
             
             $.ajax({
-                url: API_URL + 'Exam/GetAllExams',
+                url: API_URL + 'Exam/GetAllActiveExams',
                 type: 'GET',
                 success: function (data) {
                     var examDropdown = document.getElementById('examDropdown');
@@ -114,7 +114,7 @@
                             type: 'GET',
                             contentType: 'application/json',
                             //data: JSON.stringify(formData),
-                            success: function (response) {
+                            success: function (responseGard) {
                                 var selectedExamValue = document.getElementById('examDropdown').value;
 
                                 // Find the option with the selected value and get its text
@@ -128,9 +128,10 @@
                                 }
                                 console.log(selectedExamText)
                                 // Append the selected exam name to the response URL
-                                var responseUrl = new URL(response);
+                                var responseUrl = new URL(responseGard);
                                 responseUrl.searchParams.append('exam', encodeURIComponent(selectedExamText));
                                 console.log(responseUrl)
+                                console.log(responseGard)
                                 window.open(responseUrl, '_blank');
                                 
 

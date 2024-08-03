@@ -25,6 +25,7 @@ namespace ExamProvider
             {
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             });
+            builder.Services.AddHttpClient();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -59,7 +60,8 @@ namespace ExamProvider
                 {
                     builder.AllowAnyOrigin()
                            .AllowAnyMethod()
-                           .AllowAnyHeader();
+                           .AllowAnyHeader()
+                           ;
                 });
             });
             builder.Services.Configure<ApiBehaviorOptions>(apiBehaviorOptions => {
@@ -70,10 +72,11 @@ namespace ExamProvider
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-             
+                app.UseSwagger();
+                app.UseSwaggerUI();
+
             }
-            app.UseSwagger();
-            app.UseSwaggerUI();
+           
             app.UseHttpsRedirection();
             app.UseCors("AllowAll");
             app.UseAuthorization();

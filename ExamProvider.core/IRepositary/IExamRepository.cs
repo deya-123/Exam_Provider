@@ -20,6 +20,8 @@ namespace ExamProvider.core.IRepositary
         Task<List<Exam>> GetExamsByName(string name);
         Task<ExamDTO> GetExamByName(string examName);
         Task<List<ExamDetailsWithoutAnwersDTO>> GetExamDetailsWithoutAnwersByName(string examName);
+        Task UpdateState(decimal id, string state);
+        Task<List<ExamDTO>> GetAllActiveExams();
     }
 
 }

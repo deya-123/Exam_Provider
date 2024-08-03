@@ -9,6 +9,7 @@
                 <th>Price</th>
                 <th>CreatedAt</th>
                 <th>Questions</th>
+                <th>State</th>
                 <th>Update</th>
                 <th>Delete</th>
 
@@ -62,6 +63,18 @@
                     "orderable": false
                 },
                 {
+                    "data": "deletedAt",
+                    "render": function (data, type, full, meta) {
+                        console.log(data)
+                        if (data === null) {
+                            return "<button class='btn btn-success state-toggle'>Active</button>";
+                        } else {
+                            return "<button class='btn btn-danger state-toggle'>Deactivate</button>";
+                        }
+                    },
+                    "orderable": false
+                },
+                {
                     "data": null, // Edit column
                     "defaultContent": "<button data-bs-toggle=\"modal\" data-bs-target=\"#modal-edit\" class=\"btn btn-info \">Edit</button>",
                     "orderable": false
@@ -71,6 +84,8 @@
                     "defaultContent": "<button data-bs-toggle=\"modal\" data-bs-target=\"#modal-delete-exam\" class=\"btn btn-danger \">Delete</button>",
                     "orderable": false
                 }
+                ,
+              
             ],
             "lengthMenu": [5, 10, 15, 20],
             "language": {
@@ -120,6 +135,31 @@
                     }
                 }
             }
+
+            else if (action === 'Active' || action === 'Deactivate') {
+                var newState = action === 'Active' ? 'deactivate' : 'active';
+                var button = this;
+
+                $.ajax({
+                    url: API_URL + "Exam/UpdateState/" + examId + "?state=" + newState,
+                    type: 'GET',
+                    success: function (data) {
+                        if (newState === 'active') {
+                            button.innerHTML  = "Active";
+                            button.classList.add('btn-success');
+                            button.classList.remove('btn-danger');
+                        } else {
+                            button.innerHTML = "Deactivate";
+                            button.classList.add('btn-danger');
+                            button.classList.remove('btn-success');
+                        }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.log('Error updating exam state:', errorThrown);
+                    }
+                });
+            }
+
         });
 
 

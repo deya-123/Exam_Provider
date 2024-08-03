@@ -32,6 +32,11 @@ namespace ExamProvider.infra.Service
             await _examRepositary.DeleteExam(id);
         }
 
+        public async Task<List<ExamDTO>> GetAllActiveExams()
+        {
+            return await _examRepositary.GetAllActiveExams();
+        }
+
         public async Task<List<ExamDTO>> GetAllExams()
         {
            return await _examRepositary.GetAllExams();
@@ -71,5 +76,11 @@ namespace ExamProvider.infra.Service
         {
             await _examRepositary.UpdateExam(exam);
         }
+
+        public async Task UpdateState(decimal id, string state)
+        {
+            await _examRepositary.UpdateState(id,state);
+        }
     }
+    
 }

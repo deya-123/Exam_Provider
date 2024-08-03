@@ -39,17 +39,16 @@ namespace ExamProvider.Controllers
         {
             return await _userInfoService.GetUsersInfo();
         }
-        [HttpGet]
-        [Route("{id}")]
+        [HttpGet("{id}")]
         public async Task<UserInfoDTO> GetUserInfoById(decimal id)
         {
             return await _userInfoService.GetUserInfoById(id);
         }
 
 
-        [HttpGet]
-        [Route("{key}")]
-        public async Task<UserInfoDTO> GetUserInfoById(string key,decimal id)
+        [HttpGet("{key}")]
+ 
+        public async Task<UserInfoDTO> GetUserInfoByIdAndKey(string key,decimal id)
         {
             var apiKey =await _apiInfoService.GetKeyByServiceName();
             if (apiKey == null)

@@ -36,8 +36,8 @@ namespace ExamProvider.Controllers
         {
             return await _companyInfoservise.GetCompaniesInfo();
         }
-        [HttpGet]
-        [Route("{id}")]
+        [HttpGet("{id}")]
+    
         public async Task<CompanyInfoDTO> GetCompanyInfoById(decimal id)
         {
             return await _companyInfoservise.GetCompanyInfoById(id);

@@ -51,9 +51,14 @@
                 <table id="example" class="table card-table table-vcenter text-nowrap datatable" style="width:100%">
                     <thead>
                         <tr>
-                          
+
+                            <th>Student Name</th>
+                            <th>Student Email</th>
                             <th>Exam Name</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
                             <th>Score Mark</th>
+                            <th>Price</th>
                             <th>Created At</th>
                             <th>Details</th>
 
@@ -231,11 +236,26 @@
                 "pagingType": "full_numbers",
                 "pageLength": 5,
                 "lengthChange": true,
-                "ajax": API_URL + 'UserExam/GetAllExamsReservationsByStudentId/'+localStorage.getItem("userId"),
+                "ajax": API_URL + 'UserExam/GetAllExamReservationsDetailsByStudentEmail?studentEmail=' + localStorage.getItem("userEmail"),
                 "columns": [
-                
+
+                    { "data": "studentName" },
+                    { "data": "studentEmail" },
                     { "data": "examName" },
-                    { "data": "scoreMark" },
+                    {
+                        "data": "startTime",
+                        "render": function (data, type, full, meta) {
+                            return data.replace('T', ' ');
+                        }
+                    },
+                    {
+                        "data": "endTime",
+                        "render": function (data, type, full, meta) {
+                            return data.replace('T', ' ');
+                        }
+                    },
+                    { "data": "value" },
+                    { "data": "score" },
                     {
                         "data": "createdAt",
                         "render": function (data, type, full, meta) {

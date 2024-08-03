@@ -23,6 +23,11 @@
         <input asp-for="Price" type="number" class="form-control" placeholder="Enter Price"/>
         <span asp-validation-for="Price" class="text-danger"></span>
     </div>
+
+ @*    <div class="mb-3">
+        <label class="form-label">Do you want to add this exam to system garduian</label>
+        <input  id="checkbox-is-addded-exam" type="checkbox" class="form-check-input" placeholder="Is Correct" />
+    </div>*@
 </form>
 
 
@@ -49,9 +54,12 @@
                 $(formData).each(function (index, obj) {
                     jsonData[obj.name] = obj.value;
                 });
+               // let isAdded=document.getElementById("checkbox-is-addded-exam").checked;
+                let isAdded = true;
+                console.log(isAdded)
             $.ajax({
                type: 'POST',
-               url: API_URL + 'Exam/CreateExam',
+                    url: API_URL + 'Exam/CreateExam?isAdded='+isAdded,
                 contentType: 'application/json',
                     data: JSON.stringify(jsonData),
                 success: function(response) {

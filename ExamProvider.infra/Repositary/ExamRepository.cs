@@ -64,9 +64,18 @@ namespace ExamProvider.infra.Repositary
 
         public async Task<List<ExamDTO>> GetAllExams()
         {
-            var res = await _dbContext.Connection.QueryAsync<ExamDTO>(ExamPackageConstant.EXAM_PACKAGE_GET_ALL_EXAMS, commandType: CommandType.StoredProcedure);
+            return await _modelContext.Exams
+              .Select(e => new ExamDTO()
+              {
+                  ExamDuration = e.ExamDuration,
+                  ExamName = e.ExamName,
+                  ExamDescription = e.ExamDescription,
+                  ExamId = e.ExamId,
+                  Price = e.Price,
+                  DeletedAt = e.DeletedAt
 
-            return res.ToList();
+              })
+              .ToListAsync();
         }
 
         public async Task<ExamDTO> GetExamByName(string examName)
@@ -184,6 +193,44 @@ namespace ExamProvider.infra.Repositary
             var res = await _dbContext.Connection.QueryAsync<ExamDTO>(ExamPackageConstant.EXAM_PACKAGE_SEARCH_SPECIFIC_DATE, param, commandType: CommandType.StoredProcedure);
 
             return res.ToList();
+        }
+
+        public async Task UpdateState(decimal id, string state)
+        {
+           var exam= await _modelContext.Exams.FirstOrDefaultAsync(e => e.ExamId == id);
+
+            if (exam is null) {
+
+                throw new Exception("exam is not found");
+
+            }
+
+            if (state == "active")
+            {
+                exam.DeletedAt =null;
+
+            }
+            else {
+
+                exam.DeletedAt=DateTime.Now;
+            }
+
+            await _modelContext.SaveChangesAsync();
+        }
+
+        public async Task<List<ExamDTO>> GetAllActiveExams()
+        {
+          return await _modelContext.Exams.Where(e=>e.DeletedAt==null)
+                .Select(e=>new ExamDTO() {
+                    ExamDuration=e.ExamDuration,
+                    ExamName=e.ExamName,
+                    ExamDescription=e.ExamDescription,
+                    ExamId=e.ExamId,
+                    Price=e.Price,
+                    DeletedAt=e.DeletedAt
+                   
+                })
+                .ToListAsync();
         }
     }
 

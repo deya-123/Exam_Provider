@@ -77,7 +77,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             var jsonData = {};
             $.ajax({
-                url: API_URL + "CompanyInfo/GetCompanyInfoById/5",
+                url: API_URL + "CompanyInfo/GetCompanyInfoById/6",
                 type: 'GET',
 
                 success: function (data) {
@@ -101,7 +101,7 @@
                     $(formData).each(function (index, obj) {
                         jsonData[obj.name] = obj.value;
                     });
-                    jsonData['companyInfoId']=5;
+                    jsonData['companyInfoId']=6;
                     $.ajax({
                         url: API_URL + "CompanyInfo/UpdateCompanyInfo",
                         type: 'PUT',
