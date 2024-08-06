@@ -45,8 +45,8 @@
                     </div>
                     <div class="col-sm-12 col-md-12">
                         <div class="mb-3">
-                            <label class="form-label">Exam Description</label>
-                            <textarea id="examDescription" class="form-control" rows="10" readonly></textarea>
+                            <label id="examDescriptionLabel" class="form-label" style="display:none">Exam Description</label>
+                            <textarea id="examDescription" class="form-control" style="display:none" rows="10" readonly></textarea>
                         </div>
                     </div>
                 </div>
@@ -70,6 +70,7 @@
                 success: function (data) {
                     var examDropdown = document.getElementById('examDropdown');
                     var examDescription = document.getElementById('examDescription');
+                    var examDescriptionLabel = document.getElementById('examDescriptionLabel'); 
                     console.log(data);
                     data.data.forEach(function (exam) {
                         var option = document.createElement('option');
@@ -84,6 +85,16 @@
                     examDropdown.addEventListener('change', function () {
                         var selectedOption = examDropdown.options[examDropdown.selectedIndex];
                         examDescription.value = selectedOption.dataset.description || '';
+             
+
+                        if (examDropdown.selectedIndex==0){
+                            examDescription.style.display = "none";
+                            examDescriptionLabel.style.display = "none";
+                        }
+                        else {
+                            examDescription.style.display = "block";
+                            examDescriptionLabel.style.display = "block";
+                        }
                     });
                 },
                 error: function (xhr, textStatus, errorThrown) {
