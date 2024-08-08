@@ -75,7 +75,7 @@ options.HtmlHelperOptions.ClientValidationEnabled = true; // Ensure client valid
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
