@@ -49,7 +49,7 @@ namespace ExamProvider.Controllers
                 var client = _httpClientFactory.CreateClient();
                 var companyNmae = (await _companyInfoservise.GetCompanyInfoById(6)).OrganizationName;
 
-                var url = $"https://localhost:1111/api/ExamInfo/AddExamByName/{apiKey}?companyName={companyNmae}";
+                var url = $"http://192.168.1.17:1111/api/ExamInfo/AddExamByName/{apiKey}?companyName={companyNmae}";
                 var response = await client.PostAsJsonAsync(url, new
                 {
                     ExamTitle = exam.ExamName,
@@ -135,7 +135,7 @@ namespace ExamProvider.Controllers
         }
 
         [HttpGet("{key}")]
-        public async Task<ApiResponse<List<ExamDetailsWithoutAnwersDTO>>> GetExamDetailsWithoutAnwersByName(string key, string examName)
+        public async Task<ApiResponse<List<ExamDetailsWithoutAnwersDTO>>> GetExamDetailsWithoutAnswersByName(string key, string examName)
         {
             var apiKey = await _apiInfoService.GetKeyByServiceName();
             if (apiKey == null)
@@ -176,7 +176,7 @@ namespace ExamProvider.Controllers
             var client = _httpClientFactory.CreateClient();
 
 
-            var url = $"https://localhost:1111/api/ExamInfo/AddExamByName/{apiKey}?companyName=Deya";
+            var url = $"http://192.168.1.17:1111/api/ExamInfo/AddExamByName/{apiKey}?companyName=Deya";
             var response = await client.PostAsJsonAsync(url, new { 
             ExamTitle="",
             Price=20

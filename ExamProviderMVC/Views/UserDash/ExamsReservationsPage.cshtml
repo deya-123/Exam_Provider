@@ -57,8 +57,8 @@
                             <th>Exam Name</th>
                             <th>Start Time</th>
                             <th>End Time</th>
-                            <th>Score Mark</th>
                             <th>Price</th>
+                            <th>Score Mark</th>
                             <th>Created At</th>
                             <th>Details</th>
 
@@ -245,13 +245,13 @@
                     {
                         "data": "startTime",
                         "render": function (data, type, full, meta) {
-                            return data.replace('T', ' ');
+                            return data ? data.replace('T', ' ') : '';
                         }
                     },
                     {
                         "data": "endTime",
                         "render": function (data, type, full, meta) {
-                            return data.replace('T', ' ');
+                            return data ? data.replace('T', ' ') : '';
                         }
                     },
                     { "data": "value" },
@@ -259,7 +259,7 @@
                     {
                         "data": "createdAt",
                         "render": function (data, type, full, meta) {
-                            return data.replace('T', ' ');
+                            return data ? data.replace('T', ' ') : '';
                         }
                     },
                     {
