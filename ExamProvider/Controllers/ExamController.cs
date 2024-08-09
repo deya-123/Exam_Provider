@@ -49,7 +49,7 @@ namespace ExamProvider.Controllers
                 var client = _httpClientFactory.CreateClient();
                 var companyNmae = (await _companyInfoservise.GetCompanyInfoById(6)).OrganizationName;
 
-                var url = $"https://localhost:1111/api/ExamInfo/AddExamByName/{apiKey}?companyName={companyNmae}";
+                var url = $"https://exam-guardian.geeksfreelancer.online/api/ExamInfo/AddExamByName/{apiKey}?companyName={companyNmae}";
                 var response = await client.PostAsJsonAsync(url, new
                 {
                     ExamTitle = exam.ExamName,
@@ -135,7 +135,7 @@ namespace ExamProvider.Controllers
         }
 
         [HttpGet("{key}")]
-        public async Task<ApiResponse<List<ExamDetailsWithoutAnwersDTO>>> GetExamDetailsWithoutAnwersByName(string key, string examName)
+        public async Task<ApiResponse<List<ExamDetailsWithoutAnwersDTO>>> GetExamDetailsWithoutAnswersByName(string key, string examName)
         {
             var apiKey = await _apiInfoService.GetKeyByServiceName();
             if (apiKey == null)
@@ -164,30 +164,30 @@ namespace ExamProvider.Controllers
         }
 
 
-        [HttpGet("{key}")]
-        public async Task<IActionResult> AddExam()
-        {
-            var apiKey = await _apiInfoService.GetKeyByServiceName();
-            if (apiKey == null)
-            {
-                throw new InvalidOperationException("API key not found.");
-            }
+        //[HttpGet("{key}")]
+        //public async Task<IActionResult> AddExam()
+        //{
+        //    var apiKey = await _apiInfoService.GetKeyByServiceName();
+        //    if (apiKey == null)
+        //    {
+        //        throw new InvalidOperationException("API key not found.");
+        //    }
 
-            var client = _httpClientFactory.CreateClient();
+        //    var client = _httpClientFactory.CreateClient();
 
 
-            var url = $"https://localhost:1111/api/ExamInfo/AddExamByName/{apiKey}?companyName=Deya";
-            var response = await client.PostAsJsonAsync(url, new { 
-            ExamTitle="",
-            Price=20
-            });
+        //    var url = $"https://exam-guardian.geeksfreelancer.online/api/ExamInfo/AddExamByName/{apiKey}?companyName=Deya";
+        //    var response = await client.PostAsJsonAsync(url, new { 
+        //    ExamTitle="",
+        //    Price=20
+        //    });
 
-            response.EnsureSuccessStatusCode();
+        //    response.EnsureSuccessStatusCode();
 
-            var responseBody = await response.Content.ReadAsStringAsync();
+        //    var responseBody = await response.Content.ReadAsStringAsync();
 
-            return Content(responseBody, "application/json");
-        }
+        //    return Content(responseBody, "application/json");
+        //}
         [HttpGet("{id}")]
         public async Task UpdateState(decimal id, [FromQuery] string state)
         {

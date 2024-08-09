@@ -39,34 +39,34 @@ namespace ExamProviderMVC.Controllers
         }
  
 
-        [HttpPost]
-        public async Task<IActionResult>  Login(LoginViewModel loginViewModel)
-        {
-            var client = _httpClientFactory.CreateClient();
-            var response = await client.PostAsJsonAsync($"{ApiConstants.ApiBaseUrl}:{ApiConstants.ApiPort}/api/auth/login", loginViewModel);
-            using (JsonDocument doc = JsonDocument.Parse(await response.Content.ReadAsStringAsync()))
-            {
-                var root = doc.RootElement;
-                var resp = root.ValueKind;
-                bool success = root.GetProperty("success").GetBoolean();
-                if (success)
-                {
-                    var data = root.GetProperty("data");
-                    HttpContext.Session.SetString("userRole", data.GetProperty("roleId").GetInt32().ToString()??"");
-                    HttpContext.Session.SetString("userName", data.GetProperty("userName").GetString());
-                    HttpContext.Session.SetString("userEmail", data.GetProperty("userEmail").GetString());
+        //[HttpPost]
+        //public async Task<IActionResult>  Login(LoginViewModel loginViewModel)
+        //{
+        //    var client = _httpClientFactory.CreateClient();
+        //    var response = await client.PostAsJsonAsync($"{ApiConstants.ApiBaseUrl}:{ApiConstants.ApiPort}/api/auth/login", loginViewModel);
+        //    using (JsonDocument doc = JsonDocument.Parse(await response.Content.ReadAsStringAsync()))
+        //    {
+        //        var root = doc.RootElement;
+        //        var resp = root.ValueKind;
+        //        bool success = root.GetProperty("success").GetBoolean();
+        //        if (success)
+        //        {
+        //            var data = root.GetProperty("data");
+        //            HttpContext.Session.SetString("userRole", data.GetProperty("roleId").GetInt32().ToString()??"");
+        //            HttpContext.Session.SetString("userName", data.GetProperty("userName").GetString());
+        //            HttpContext.Session.SetString("userEmail", data.GetProperty("userEmail").GetString());
 
-                    return Ok(Content(root.GetRawText(), "application/json").Content);
-                  // return RedirectHelper.RedirectByRoleName("Profile", "Admin");
-                }
-                else {
-                    return BadRequest(Content(root.GetRawText(), "application/json").Content);
+        //            return Ok(Content(root.GetRawText(), "application/json").Content);
+        //          // return RedirectHelper.RedirectByRoleName("Profile", "Admin");
+        //        }
+        //        else {
+        //            return BadRequest(Content(root.GetRawText(), "application/json").Content);
                     
-                }
-            }
+        //        }
+        //    }
 
            
-        }
+        //}
 
         //[HttpPost]
         //public IActionResult Login(LoginViewModel loginViewModel)

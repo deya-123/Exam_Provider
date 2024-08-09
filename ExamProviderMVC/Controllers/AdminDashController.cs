@@ -84,7 +84,8 @@ namespace ExamProviderMVC.Controllers
         public async Task<IActionResult> Profile()
         {
             //ViewBag.Countries = _context.Countries.ToList();
-            //var user = await _context.Users.FirstOrDefaultAsync(e => e.UserId == HttpContext.Session.GetInt32("userId"));
+            //var user = await _context.Users.FirstOrDefaultAsync(e => e.UserId ==
+            //.GetInt32("userId"));
 
             //if (user != null)
             //{

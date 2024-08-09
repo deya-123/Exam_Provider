@@ -60,8 +60,7 @@ namespace ExamProvider
                 {
                     builder.AllowAnyOrigin()
                            .AllowAnyMethod()
-                           .AllowAnyHeader()
-                           ;
+                           .AllowAnyHeader();
                 });
             });
             builder.Services.Configure<ApiBehaviorOptions>(apiBehaviorOptions => {
@@ -77,7 +76,7 @@ namespace ExamProvider
 
             }
            
-            app.UseHttpsRedirection();
+           // app.UseHttpsRedirection();
             app.UseCors("AllowAll");
             app.UseAuthorization();
 

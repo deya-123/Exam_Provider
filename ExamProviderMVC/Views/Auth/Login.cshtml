@@ -83,15 +83,17 @@
                 };
                 $.ajax({
                     type: 'POST',
-                    url: '/auth/login',
-                    data: (formData),
+                    url: API_URL + 'auth/login',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
                     success: function (response) {
                         console.log(response);
-                        let jsonResponse=JSON.parse(response)
+                        let jsonResponse = response;
                         if (jsonResponse.success) {
                            
                             showSuccessToast('Login successful');
                             localStorage.setItem("userId", jsonResponse.data.userId);
+                            localStorage.setItem("roleId", jsonResponse.data.roleId);
                             localStorage.setItem("userName", jsonResponse.data.userName);
                             localStorage.setItem("userEmail", jsonResponse.data.userEmail);
                             localStorage.setItem("userPassword", jsonResponse.data.userPassword);
