@@ -135,7 +135,7 @@ namespace ExamProvider.Controllers
         }
 
         [HttpGet("{key}")]
-        public async Task<ApiResponse<List<ExamDetailsWithoutAnwersDTO>>> GetExamDetailsWithoutAnwersByName(string key, string examName)
+        public async Task<ApiResponse<List<ExamDetailsWithoutAnwersDTO>>> GetExamDetailsWithoutAnswersByName(string key, string examName)
         {
             var apiKey = await _apiInfoService.GetKeyByServiceName();
             if (apiKey == null)
