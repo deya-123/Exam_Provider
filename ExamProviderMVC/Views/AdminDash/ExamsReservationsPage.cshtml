@@ -243,21 +243,22 @@
                     {
                         "data": "startTime",
                         "render": function (data, type, full, meta) {
-                            return data.replace('T', ' ');
+                            return data ? data.replace('T', ' ') : '';
                         }
                     },
                     {
                         "data": "endTime",
                         "render": function (data, type, full, meta) {
-                            return data.replace('T', ' ');
+                            return data ? data.replace('T', ' ') : '';
                         }
                     },
-                    { "data": "value" },
                     { "data": "score" },
+                    { "data": "value" },
+                 
                     {
                         "data": "createdAt",
                         "render": function (data, type, full, meta) {
-                            return data.replace('T', ' ');
+                            return data ? data.replace('T', ' ') : '';
                         }
                     },
                     {

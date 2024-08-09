@@ -245,7 +245,7 @@
                    {
                     "data": "createdAt",
                     "render": function (data, type, full, meta) {
-                        return data.replace('T', ' ');
+                            return data ? data.replace('T', ' ') : '';
                     }
                 },
                     {

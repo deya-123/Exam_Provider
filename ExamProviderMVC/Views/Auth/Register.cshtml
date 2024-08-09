@@ -84,7 +84,7 @@
                 };
             $.ajax({
                type: 'POST',
-                url: '@($"{ApiConstants.ApiBaseUrl}:{ApiConstants.ApiPort}/api/auth/register")',
+                url: API_URL +'auth/register',
                 contentType: 'application/json',
                 data: JSON.stringify(formData),
                 success: function(response) {

@@ -130,7 +130,7 @@ namespace ExamProvider.Controllers
             var companyNmae = (await _companyInfoservise.GetCompanyInfoById(6)).OrganizationName;
             var decodedStudentEmail = WebUtility.UrlEncode(studentEmail);
             var client = _httpClientFactory.CreateClient();
-            var url = $"https://localhost:1111/api/ExamReservation/GetAllExamReservationsDetailsByStudentEmail/{apiKey}?companyName={companyNmae}&studentEmail={decodedStudentEmail}";
+            var url = $"https://exam-guardian.geeksfreelancer.online/api/ExamReservation/GetAllExamReservationsDetailsByStudentEmail/{apiKey}?companyName={companyNmae}&studentEmail={decodedStudentEmail}";
             var response = await client.GetAsync(url);
             response.EnsureSuccessStatusCode();
 
@@ -150,7 +150,7 @@ namespace ExamProvider.Controllers
             }
             var companyNmae = (await _companyInfoservise.GetCompanyInfoById(6)).OrganizationName;
             var client = _httpClientFactory.CreateClient();
-            var url = $"https://localhost:1111/api/ExamReservation/GetAllExamReservationsDetails/{apiKey}?companyName={companyNmae}";
+            var url = $"https://exam-guardian.geeksfreelancer.online/api/ExamReservation/GetAllExamReservationsDetails/{apiKey}?companyName={companyNmae}";
             var response = await client.GetAsync(url);
             response.EnsureSuccessStatusCode();
 
